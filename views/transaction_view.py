@@ -21,7 +21,7 @@ from database import TransactionModel
 def _render_transaction_card(model: TransactionModel, item: dict):
     """Render a single transaction as an expandable card."""
     # Format the header
-    transaction_type = item.get('transaction_type', 'Unknown')
+    transaction_type = item.get('type', 'Unknown')
     amount = item.get('amount', 0)
     date = item.get('transaction_date', datetime.now())
     category = item.get('category', 'Others')

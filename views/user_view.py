@@ -1,4 +1,3 @@
-from streamlit_avatar import avatar
 from database.user_model import UserModel
 import streamlit as st
 import time
@@ -36,7 +35,7 @@ def render_user_profile(user_model: UserModel, user: dict[str, any]):
             if st.button("⚙️", key="settings_toggle", help="Settings"):
                 st.session_state['user_settings_open'] = not st.session_state['user_settings_open']
         
-        if st.session_state['user_settings_open']:
+        if st.session_state['user_settings_open']: # is True
             _render_user_settings(user_model, user.get("id"))
         
         st.divider()

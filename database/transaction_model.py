@@ -67,7 +67,7 @@ class TransactionModel:
                 date_query["$gte"] = handler_datetime(start_date) # $gte = greater than or equal
             if end_date is not None:
                 date_query["$lte"] = handler_datetime(end_date) # $lte = less than or equal
-            conditions.append({"date": date_query})
+            conditions.append({"created_at": date_query})
 
         # Check description:
         if "search_text" in advanced_filter:
@@ -211,8 +211,6 @@ class TransactionModel:
             list of transaction documents
         """
         return self.get_transactions(
-            skip=0,
-            limit=1000,  # Large limit for legacy behavior
             advanced_filters= {
                 "start_date": start_date,
                 "end_date": end_date,

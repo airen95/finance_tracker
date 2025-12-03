@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta, date
 import streamlit as st
+from typing import Union
 
 def format_currency(amount):
     """Format number as currency"""
-    return f"${amount:,.2f}"
+    return f"${amount:,.2f}" # round to 2 decimal, and add "," after 1000 unit
 
 def get_date_range_options():
     """Get predefined date range options"""
@@ -54,7 +55,8 @@ def cached_data_fetch(func, *args, **kwargs):
     """Cache data fetching functions"""
     return func(*args, **kwargs)
 
-def handler_datetime(date_: datetime | date | str) -> datetime:
+
+def handler_datetime(date_: Union[datetime, date, str]) -> datetime:
     """Convert various date formats to datetime object"""
     if isinstance(date_, datetime):
         return date_

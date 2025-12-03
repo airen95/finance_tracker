@@ -5,14 +5,19 @@ import config
 from database import (
     CategoryModel,
     TransactionModel,
-    UserModel
+    UserModel,
 )
+
+# import analytics
+from analytics.analyzer import FinanceAnalyzer
+# from analytics.visualizer import FinanceVisualizer
 
 # import view module
 from views import (
     render_categories,
     render_transactions,
-    render_user_profile
+    render_user_profile,
+    render_dashboard
 )
 
 # initialize models
@@ -22,7 +27,7 @@ def init_models():
     return {
         "category": CategoryModel(),
         "transaction": TransactionModel(),
-        "user": UserModel()
+        "user": UserModel(),
     }
 
 # initialize session per user
@@ -67,13 +72,18 @@ else:
     models['category'].set_user_id(mongo_user_id)
     models['transaction'].set_user_id(mongo_user_id)
 
-    user = st.user.to_dict()
+
+    user = st.user.to_dict() # convert google_user to dict
     user.update({
         "id": mongo_user_id
     })
 
+    # Display user profile after update user with mongo_user_id
     render_user_profile(user_model, user)
 
+    # init analyzer
+    # because transaction_model has set user_id already in line 74
+    analyzer_model = FinanceAnalyzer(models['transaction'])
 
     # =============================================
     # 2. Navigation
@@ -89,6 +99,8 @@ else:
     # =============================================
     if page == "Home":
         st.title("Home")
+        render_dashboard(analyzer_model=analyzer_model, 
+                        transaction_model=models['transaction'])
 
     elif page == "Category":
         # get category_model from models
